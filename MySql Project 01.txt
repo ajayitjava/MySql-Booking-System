@@ -1,0 +1,222 @@
+MariaDB [sqlproject]> create table Bus(Bus_no int primary key,Bus_name varchar(50),Source varchar(50),Destination varchar(50),Arrival_Time time,Departure_Time time);
+Query OK, 0 rows affected (0.329 sec)
+
+MariaDB [sqlproject]> desc bus;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| Bus_no         | int(11)     | NO   | PRI | NULL    |       |
+| Bus_name       | varchar(50) | YES  |     | NULL    |       |
+| Source         | varchar(50) | YES  |     | NULL    |       |
+| Destination    | varchar(50) | YES  |     | NULL    |       |
+| Arrival_Time   | time        | YES  |     | NULL    |       |
+| Departure_Time | time        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.061 sec)
+
+MariaDB [sqlproject]> create table User(User_id int primary key,Name varchar(50),Contact int,Address varchar(50),Age int,User_name varchar(50),Password varchar(50));
+Query OK, 0 rows affected (0.576 sec)
+
+MariaDB [sqlproject]> desc user;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| User_id   | int(11)     | NO   | PRI | NULL    |       |
+| Name      | varchar(50) | YES  |     | NULL    |       |
+| Contact   | int(11)     | YES  |     | NULL    |       |
+| Address   | varchar(50) | YES  |     | NULL    |       |
+| Age       | int(11)     | YES  |     | NULL    |       |
+| User_name | varchar(50) | YES  |     | NULL    |       |
+| Password  | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.016 sec)
+
+MariaDB [sqlproject]> create table BusType(Bus_Type int primary key,Bus_no int,Air_Condi varchar(50),Sleeper varchar(50));
+Query OK, 0 rows affected (0.364 sec)
+
+MariaDB [sqlproject]> alter table Bustype add constraint foreign key(Bus_no) references Bus(Bus_no);
+Query OK, 0 rows affected (8.603 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sqlproject]> desc BusType;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Bus_Type  | int(11)     | NO   | PRI | NULL    |       |
+| Bus_no    | int(11)     | YES  | MUL | NULL    |       |
+| Air_Condi | varchar(50) | YES  |     | NULL    |       |
+| Sleeper   | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.242 sec)
+
+MariaDB [sqlproject]> create table TicketBooking(Ticket_no int primary key,Bus_no int,User_id int,Bus_Type int,Source varchar(50),Destination varchar(50),Distance varchar(50),Ticket_Date date,foreign key(User_id) references User(User_id),foreign key(Bus_no) references Bus(Bus_no),foreign key(Bus_Type) references BusType(Bus_Type));
+Query OK, 0 rows affected (0.443 sec)
+
+MariaDB [sqlproject]> desc TicketBooking;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Ticket_no   | int(11)     | NO   | PRI | NULL    |       |
+| Bus_no      | int(11)     | YES  | MUL | NULL    |       |
+| User_id     | int(11)     | YES  | MUL | NULL    |       |
+| Bus_Type    | int(11)     | YES  | MUL | NULL    |       |
+| Source      | varchar(50) | YES  |     | NULL    |       |
+| Destination | varchar(50) | YES  |     | NULL    |       |
+| Distance    | varchar(50) | YES  |     | NULL    |       |
+| Ticket_Date | date        | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.047 sec)
+
+MariaDB [sqlproject]> create table payment(Payment_id int primary key,Ticket_no int,Pay_mod varchar(50),Pay_Date date,foreign key(Ticket_no) references TicketBooking(Ticket_no));
+Query OK, 0 rows affected (0.473 sec)
+
+MariaDB [sqlproject]> desc payment;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Payment_id | int(11)     | NO   | PRI | NULL    |       |
+| Ticket_no  | int(11)     | YES  | MUL | NULL    |       |
+| Pay_mod    | varchar(50) | YES  |     | NULL    |       |
+| Pay_Date   | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.132 sec)
+
+MariaDB [sqlproject]> insert into Bus Values(1234,"SRS","Mumbai","Pune","07:31:30","01:30:31");
+Query OK, 1 row affected (0.297 sec)
+
+
+MariaDB [sqlproject]> insert into Bus Values(1235,"SVR","Mumbai","Goa","08:25:30","02:30:31");
+Query OK, 1 row affected (0.111 sec)
+
+MariaDB [sqlproject]> insert into Bus Values(1236,"SRM","Mumbai","Aurangabad","06:11:30","04:30:31");
+Query OK, 1 row affected (0.070 sec)
+
+MariaDB [sqlproject]> insert into Bus Values(1237,"SPM","Mumbai","Nagpur","09:12:30","05:25:59");
+Query OK, 1 row affected (0.065 sec)
+
+MariaDB [sqlproject]> insert into Bus Values(1238,"SJJM","Pune","Nagpur","10:45:30","11:25:59");
+Query OK, 1 row affected (0.066 sec)
+
+MariaDB [sqlproject]> insert into Bus Values(1239,"PJSM","Aurangabad","Pune","11:26:30","12:31:45");
+Query OK, 1 row affected (0.061 sec)
+
+MariaDB [sqlproject]> select * from Bus;
++--------+----------+------------+-------------+--------------+----------------+
+| Bus_no | Bus_name | Source     | Destination | Arrival_Time | Departure_Time |
++--------+----------+------------+-------------+--------------+----------------+
+|   1234 | SRS      | Mumbai     | Pune        | 07:31:30     | 01:30:31       |
+|   1235 | SVR      | Mumbai     | Goa         | 08:25:30     | 02:30:31       |
+|   1236 | SRM      | Mumbai     | Aurangabad  | 06:11:30     | 04:30:31       |
+|   1237 | SPM      | Mumbai     | Nagpur      | 09:12:30     | 05:25:59       |
+|   1238 | SJJM     | Pune       | Nagpur      | 10:45:30     | 11:25:59       |
+|   1239 | PJSM     | Aurangabad | Pune        | 11:26:30     | 12:31:45       |
++--------+----------+------------+-------------+--------------+----------------+
+6 rows in set (0.001 sec)
+
+
+MariaDB [sqlproject]> insert into user values(101,"Sam",123456,"Mumbai",25,"sam@gmail","sam123");
+Query OK, 1 row affected (0.063 sec)
+
+MariaDB [sqlproject]> insert into user values(102,"Harry",123456,"Nashik",20,"harry@gmail","harry123");
+Query OK, 1 row affected (0.051 sec)
+
+MariaDB [sqlproject]> insert into user values(103,"Garry",123456,"Pune",30,"garry@gmail","garry123");
+Query OK, 1 row affected (0.158 sec)
+
+MariaDB [sqlproject]> insert into user values(104,"George",123456,"Nagpur",50,"george@gmail","george123");
+Query OK, 1 row affected (0.051 sec)
+
+MariaDB [sqlproject]> insert into user values(105,"Will",123456,"Aurangabad",35,"will@gmail","will123");
+Query OK, 1 row affected (0.058 sec)
+
+MariaDB [sqlproject]> insert into user values(106,"Josh",123456,"Pune",40,"josh@gmail","josh123");
+Query OK, 1 row affected (0.060 sec)
+
+MariaDB [sqlproject]> select * from user;
++---------+--------+---------+------------+------+--------------+-----------+
+| User_id | Name   | Contact | Address    | Age  | User_name    | Password  |
++---------+--------+---------+------------+------+--------------+-----------+
+|     101 | Sam    |  123456 | Mumbai     |   25 | sam@gmail    | sam123    |
+|     102 | Harry  |  123456 | Nashik     |   20 | harry@gmail  | harry123  |
+|     103 | Garry  |  123456 | Pune       |   30 | garry@gmail  | garry123  |
+|     104 | George |  123456 | Nagpur     |   50 | george@gmail | george123 |
+|     105 | Will   |  123456 | Aurangabad |   35 | will@gmail   | will123   |
+|     106 | Josh   |  123456 | Pune       |   40 | josh@gmail   | josh123   |
++---------+--------+---------+------------+------+--------------+-----------+
+6 rows in set (0.001 sec)
+
+
+MariaDB [sqlproject]> insert into bustype values(502,1234,"Yes","Yes");
+Query OK, 1 row affected (0.056 sec)
+
+MariaDB [sqlproject]> insert into bustype values(504,1235,"No","Yes");
+Query OK, 1 row affected (0.076 sec)
+
+MariaDB [sqlproject]> insert into bustype values(506,1236,"Yes","No");
+Query OK, 1 row affected (0.045 sec)
+
+MariaDB [sqlproject]> insert into bustype values(508,1237,"No","No");
+Query OK, 1 row affected (0.046 sec)
+
+MariaDB [sqlproject]> insert into bustype values(510,1238,"Yes","Yes");
+Query OK, 1 row affected (0.142 sec)
+
+MariaDB [sqlproject]> select * from busType;
++----------+--------+-----------+---------+
+| Bus_Type | Bus_no | Air_Condi | Sleeper |
++----------+--------+-----------+---------+
+|      502 |   1234 | Yes       | Yes     |
+|      504 |   1235 | No        | Yes     |
+|      506 |   1236 | Yes       | No      |
+|      508 |   1237 | No        | No      |
+|      510 |   1238 | Yes       | Yes     |
++----------+--------+-----------+---------+
+
+MariaDB [sqlproject]> insert into ticketBooking values(5012,1234,101,502,"Mumbai","Pune","150KM","2021-12-02");
+Query OK, 1 row affected (0.052 sec)
+
+MariaDB [sqlproject]> insert into ticketBooking values(5014,1235,102,504,"Mumbai","Goa","600KM","2021-08-05");
+Query OK, 1 row affected (0.066 sec)
+
+MariaDB [sqlproject]> insert into ticketBooking values(5015,1236,103,506,"Goa","Mumabi","600KM","2021-05-11");
+Query OK, 1 row affected (0.089 sec)
+
+MariaDB [sqlproject]> insert into ticketBooking values(5016,1238,104,508,"Pune","Nagpur","700KM","2021-10-05");
+Query OK, 1 row affected (0.048 sec)
+
+MariaDB [sqlproject]> select * from ticketbooking;
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+| Ticket_no | Bus_no | User_id | Bus_Type | Source | Destination | Distance | Ticket_Date |
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+|      5012 |   1234 |     101 |      502 | Mumbai | Pune        | 150KM    | 2021-12-02  |
+|      5014 |   1235 |     102 |      504 | Mumbai | Goa         | 600KM    | 2021-08-05  |
+|      5015 |   1236 |     103 |      506 | Goa    | Mumabi      | 600KM    | 2021-05-11  |
+|      5016 |   1238 |     104 |      508 | Pune   | Nagpur      | 700KM    | 2021-10-05  |
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+4 rows in set (0.000 sec)
+
+
+MariaDB [sqlproject]> insert into payment values(8012,5012,"Online","2022-03-05");
+Query OK, 1 row affected (0.057 sec)
+
+MariaDB [sqlproject]> insert into payment values(8011,5014,"Online","2022-11-07");
+Query OK, 1 row affected (0.063 sec)
+
+MariaDB [sqlproject]> insert into payment values(8016,5015,"Online","2022-11-05");
+Query OK, 1 row affected (0.076 sec)
+
+MariaDB [sqlproject]> insert into payment values(8018,5016,"Online","2022-07-05");
+Query OK, 1 row affected (0.169 sec)
+
+MariaDB [sqlproject]> select * from payment;
++------------+-----------+---------+------------+
+| Payment_id | Ticket_no | Pay_mod | Pay_Date   |
++------------+-----------+---------+------------+
+|       8011 |      5014 | Online  | 2022-11-07 |
+|       8012 |      5012 | Online  | 2022-03-05 |
+|       8016 |      5015 | Online  | 2022-11-05 |
+|       8018 |      5016 | Online  | 2022-07-05 |
++------------+-----------+---------+------------+
+4 rows in set (0.001 sec)
+
+

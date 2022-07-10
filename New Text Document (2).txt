@@ -1,0 +1,127 @@
+
+MariaDB [sqlproject]> desc bus;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| Bus_no         | int(11)     | NO   | PRI | NULL    |       |
+| Bus_name       | varchar(50) | YES  |     | NULL    |       |
+| Source         | varchar(50) | YES  |     | NULL    |       |
+| Destination    | varchar(50) | YES  |     | NULL    |       |
+| Arrival_Time   | time        | YES  |     | NULL    |       |
+| Departure_Time | time        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.088 sec)
+
+MariaDB [sqlproject]> desc bustype;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Bus_Type  | int(11)     | NO   | PRI | NULL    |       |
+| Bus_no    | int(11)     | YES  | MUL | NULL    |       |
+| Air_Condi | varchar(50) | YES  |     | NULL    |       |
+| Sleeper   | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.142 sec)
+
+MariaDB [sqlproject]> desc payment;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Payment_id | int(11)     | NO   | PRI | NULL    |       |
+| Ticket_no  | int(11)     | YES  | MUL | NULL    |       |
+| Pay_mod    | varchar(50) | YES  |     | NULL    |       |
+| Pay_Date   | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.066 sec)
+
+MariaDB [sqlproject]> desc user;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| User_id   | int(11)     | NO   | PRI | NULL    |       |
+| Name      | varchar(50) | YES  |     | NULL    |       |
+| Contact   | int(11)     | YES  |     | NULL    |       |
+| Address   | varchar(50) | YES  |     | NULL    |       |
+| Age       | int(11)     | YES  |     | NULL    |       |
+| User_name | varchar(50) | YES  |     | NULL    |       |
+| Password  | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.110 sec)
+
+MariaDB [sqlproject]> desc ticketbooking;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Ticket_no   | int(11)     | NO   | PRI | NULL    |       |
+| Bus_no      | int(11)     | YES  | MUL | NULL    |       |
+| User_id     | int(11)     | YES  | MUL | NULL    |       |
+| Bus_Type    | int(11)     | YES  | MUL | NULL    |       |
+| Source      | varchar(50) | YES  |     | NULL    |       |
+| Destination | varchar(50) | YES  |     | NULL    |       |
+| Distance    | varchar(50) | YES  |     | NULL    |       |
+| Ticket_Date | date        | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.139 sec)
+
+MariaDB [sqlproject]> select * from bus;
++--------+----------+------------+-------------+--------------+----------------+
+| Bus_no | Bus_name | Source     | Destination | Arrival_Time | Departure_Time |
++--------+----------+------------+-------------+--------------+----------------+
+|   1234 | SRS      | Mumbai     | Pune        | 07:31:30     | 01:30:31       |
+|   1235 | SVR      | Mumbai     | Goa         | 08:25:30     | 02:30:31       |
+|   1236 | SRM      | Mumbai     | Aurangabad  | 06:11:30     | 04:30:31       |
+|   1237 | SPM      | Mumbai     | Nagpur      | 09:12:30     | 05:25:59       |
+|   1238 | SJJM     | Pune       | Nagpur      | 10:45:30     | 11:25:59       |
+|   1239 | PJSM     | Aurangabad | Pune        | 11:26:30     | 12:31:45       |
++--------+----------+------------+-------------+--------------+----------------+
+6 rows in set (0.053 sec)
+
+MariaDB [sqlproject]> select * from payment;
++------------+-----------+---------+------------+
+| Payment_id | Ticket_no | Pay_mod | Pay_Date   |
++------------+-----------+---------+------------+
+|       8011 |      5014 | Online  | 2022-11-07 |
+|       8012 |      5012 | Online  | 2022-03-05 |
+|       8016 |      5015 | Online  | 2022-11-05 |
+|       8018 |      5016 | Online  | 2022-07-05 |
++------------+-----------+---------+------------+
+4 rows in set (0.000 sec)
+
+MariaDB [sqlproject]> select * from ticketbooking;
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+| Ticket_no | Bus_no | User_id | Bus_Type | Source | Destination | Distance | Ticket_Date |
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+|      5012 |   1234 |     101 |      502 | Mumbai | Pune        | 150KM    | 2021-12-02  |
+|      5014 |   1235 |     102 |      504 | Mumbai | Goa         | 600KM    | 2021-08-05  |
+|      5015 |   1236 |     103 |      506 | Goa    | Mumabi      | 600KM    | 2021-05-11  |
+|      5016 |   1238 |     104 |      508 | Pune   | Nagpur      | 700KM    | 2021-10-05  |
++-----------+--------+---------+----------+--------+-------------+----------+-------------+
+4 rows in set (0.001 sec)
+
+MariaDB [sqlproject]> select * from user;
++---------+--------+---------+------------+------+--------------+-----------+
+| User_id | Name   | Contact | Address    | Age  | User_name    | Password  |
++---------+--------+---------+------------+------+--------------+-----------+
+|     101 | Sam    |  123456 | Mumbai     |   25 | sam@gmail    | sam123    |
+|     102 | Harry  |  123456 | Nashik     |   20 | harry@gmail  | harry123  |
+|     103 | Garry  |  123456 | Pune       |   30 | garry@gmail  | garry123  |
+|     104 | George |  123456 | Nagpur     |   50 | george@gmail | george123 |
+|     105 | Will   |  123456 | Aurangabad |   35 | will@gmail   | will123   |
+|     106 | Josh   |  123456 | Pune       |   40 | josh@gmail   | josh123   |
++---------+--------+---------+------------+------+--------------+-----------+
+6 rows in set (0.001 sec)
+
+MariaDB [sqlproject]> select * from bus;
++--------+----------+------------+-------------+--------------+----------------+
+| Bus_no | Bus_name | Source     | Destination | Arrival_Time | Departure_Time |
++--------+----------+------------+-------------+--------------+----------------+
+|   1234 | SRS      | Mumbai     | Pune        | 07:31:30     | 01:30:31       |
+|   1235 | SVR      | Mumbai     | Goa         | 08:25:30     | 02:30:31       |
+|   1236 | SRM      | Mumbai     | Aurangabad  | 06:11:30     | 04:30:31       |
+|   1237 | SPM      | Mumbai     | Nagpur      | 09:12:30     | 05:25:59       |
+|   1238 | SJJM     | Pune       | Nagpur      | 10:45:30     | 11:25:59       |
+|   1239 | PJSM     | Aurangabad | Pune        | 11:26:30     | 12:31:45       |
++--------+----------+------------+-------------+--------------+----------------+
+6 rows in set (0.001 sec)
+
+MariaDB [sqlproject]>
